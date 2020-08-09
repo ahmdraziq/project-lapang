@@ -263,13 +263,14 @@ class _BodyState extends State<Body> {
   }
 
   ListView _listView(snapshot) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: snapshot.data.documents.length,
       physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
       itemBuilder: (context, index) {
         return _tile(snapshot.data.documents[index].data['chatroomId'],
             snapshot.data.documents[index].data['users'], Icons.person);
       },
+      separatorBuilder: (context, index) => const Divider(),
     );
   }
 

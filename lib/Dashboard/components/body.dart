@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_layout_1/Profile/MainProfile/profile_screen.dart';
 import 'package:project_layout_1/UI_Components/search_box.dart';
 import 'package:project_layout_1/components/animation_config.dart';
 import 'package:project_layout_1/components/configuration.dart';
@@ -41,6 +42,7 @@ class _BodyState extends State<Body> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
+                              FocusScope.of(context).unfocus();
                               if (isCollapsed)
                                 animateController.forward();
                               else
@@ -58,9 +60,18 @@ class _BodyState extends State<Body> {
                           "Home",
                           style: Theme.of(context).textTheme.headline1,
                         ),
-                        Icon(
-                          Icons.person_outline,
-                          color: kFontColor,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) {
+                                return ProfileScreen();
+                              },
+                            ));
+                          },
+                          child: Icon(
+                            Icons.person_outline,
+                            color: kFontColor,
+                          ),
                         ),
                       ],
                     ),
@@ -68,7 +79,11 @@ class _BodyState extends State<Body> {
                   SizedBox(
                     height: size.height * 0.03,
                   ),
-                  SearchBox(),
+                  !isCollapsed
+                      ? SearchBox(
+                          disabled: true,
+                        )
+                      : SearchBox(),
                 ],
               ),
             ),

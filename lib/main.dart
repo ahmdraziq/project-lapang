@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project_layout_1/Drawer/drawer_screen.dart';
-import 'package:project_layout_1/Login/login_screen.dart';
+import 'package:project_layout_1/Welcome/welcome_screen.dart';
 import 'package:project_layout_1/components/configuration.dart';
 
 void main() {
@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
                 return Scaffold();
               case (ConnectionState.done):
                 if (snapshot.data == null)
-                  return LoginScreen();
+                  return WelcomeScreen();
                 else
                   return DrawerScreen();
                 break;

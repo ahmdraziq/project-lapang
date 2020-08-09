@@ -57,7 +57,7 @@ class _BodyState extends State<Body> {
                           "Setting",
                           style: Theme.of(context).textTheme.headline1,
                         ),
-                        Text(""),
+                        Text("\t\t"),
                       ],
                     ),
                   ),

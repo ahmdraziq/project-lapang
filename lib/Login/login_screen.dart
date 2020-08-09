@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project_layout_1/Drawer/drawer_screen.dart';
 import 'package:project_layout_1/HttpController/http_request.dart';
 import 'package:project_layout_1/Signup/signup_screen.dart';
+import 'package:project_layout_1/UI_Components/input_container.dart';
+import 'package:project_layout_1/UI_Components/menu_button.dart';
 import 'package:project_layout_1/components/configuration.dart';
 import 'package:project_layout_1/components/loading_screen.dart';
 import 'package:project_layout_1/components/toast.dart';
@@ -74,132 +76,94 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: size.height * 0.05,
                     ),
-                    Container(
-                        decoration: BoxDecoration(
-                            color: whichTap != "email"
-                                ? kPrimaryColor
-                                : kSecondaryColor.withAlpha(70),
-                            borderRadius: BorderRadius.circular(10)),
-                        width: size.width,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                        child: TextField(
-                          controller: TextEditingController(text: email),
-                          onTap: () {
-                            setState(() {
-                              whichTap = "email";
-                            });
-                          },
-                          onChanged: (value) {
-                            email = value;
-                          },
-                          onSubmitted: (value) {
-                            whichTap = "";
-                          },
-                          style: TextStyle(
-                              color: kFontColor, fontWeight: FontWeight.w500),
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                Icons.email,
-                                color: kFontColor.withOpacity(0.5),
-                              ),
-                              labelText: "EMAIL",
-                              labelStyle: TextStyle(
-                                  color: kFontColor.withOpacity(0.5))),
-                        )),
-                    Container(
-                        decoration: BoxDecoration(
-                            color: whichTap != "password"
-                                ? kPrimaryColor
-                                : kSecondaryColor.withAlpha(70),
-                            borderRadius: BorderRadius.circular(10)),
-                        width: size.width,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                        child: TextField(
-                          controller: TextEditingController(text: password),
-                          obscureText: isPasswordInvisible,
-                          onTap: () {
-                            setState(() {
-                              whichTap = "password";
-                            });
-                          },
-                          onChanged: (value) {
-                            password = value;
-                          },
-                          onSubmitted: (value) {
-                            whichTap = "";
-                          },
-                          style: TextStyle(
-                              color: kFontColor, fontWeight: FontWeight.w500),
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                whichTap == "password"
-                                    ? Icons.lock_open
-                                    : Icons.lock_outline,
-                                color: kFontColor.withOpacity(0.5),
-                              ),
-                              suffixIcon: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isPasswordInvisible =
-                                        isPasswordInvisible ? false : true;
-                                  });
-                                },
-                                child: Icon(
-                                  isPasswordInvisible
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: kFontColor.withOpacity(0.5),
-                                ),
-                              ),
-                              labelText: "PASSWORD",
-                              labelStyle: TextStyle(
-                                  color: kFontColor.withOpacity(0.5))),
-                        )),
+                    InputContainer(
+                      deco: whichTap == "email"
+                          ? BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: kSecondaryColor.withAlpha(70))
+                          : BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: kPrimaryColor),
+                      icon: Icons.email,
+                      value: email,
+                      label: "EMAIL",
+                      onChanged: (value) {
+                        email = value;
+                      },
+                      onSubmitted: (value) {
+                        whichTap = "";
+                      },
+                      onTap: () {
+                        whichTap = "email";
+                      },
+                    ),
+                    InputContainer(
+                      deco: whichTap == "password"
+                          ? BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: kSecondaryColor.withAlpha(70))
+                          : BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: kPrimaryColor),
+                      icon: whichTap == "password"
+                          ? Icons.lock_open
+                          : Icons.lock_outline,
+                      value: password,
+                      obscureText: isPasswordInvisible,
+                      label: "PASSWORD",
+                      onChanged: (value) {
+                        password = value;
+                      },
+                      onSubmitted: (value) {
+                        whichTap = "";
+                      },
+                      onTap: () {
+                        whichTap = "password";
+                      },
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isPasswordInvisible = !isPasswordInvisible;
+                          });
+                        },
+                        child: Icon(
+                          isPasswordInvisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: isPasswordInvisible
+                              ? kFontColor.withOpacity(.5)
+                              : kFontColor.withOpacity(.87),
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height: size.height * 0.03,
                     ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Container(
-                        width: size.width * 0.6,
-                        color: kAccentColor,
-                        child: FlatButton(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 40),
-                          onPressed: () async {
-                            if (email == "" || password == "") {
-                              showToast(
-                                  "Please fill in all the field!", context,
-                                  duration: 5, gravity: Toast.BOTTOM);
-                              return;
-                            }
-                            setState(() {
-                              isLoading = true;
-                            });
+                    MenuButton(
+                      title: "LOGIN",
+                      onPressed: () async {
+                        if (email == "" || password == "") {
+                          showToast("Please fill in all the field!", context,
+                              duration: 5, gravity: Toast.BOTTOM);
+                          return;
+                        }
+                        setState(() {
+                          isLoading = true;
+                        });
 
-                            dynamic data = {
-                              "email": email,
-                              "password": password
-                            };
-                            await login(data, context).then((value) {
-                              setState(() {
-                                isLoading = false;
-                              });
-                              if (value)
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) {
-                                    return DrawerScreen();
-                                  },
-                                ));
-                            });
-                          },
-                          child: Text("LOGIN"),
-                        ),
-                      ),
+                        dynamic data = {"email": email, "password": password};
+                        await login(data, context).then((value) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          if (value)
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) {
+                                return DrawerScreen();
+                              },
+                            ));
+                        });
+                      },
                     ),
                     SizedBox(
                       height: size.height * 0.02,

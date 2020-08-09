@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_layout_1/Drawer/drawer_screen.dart';
 import 'package:project_layout_1/HttpController/http_request.dart';
+import 'package:project_layout_1/UI_Components/input_container.dart';
+import 'package:project_layout_1/UI_Components/menu_button.dart';
 import 'package:project_layout_1/components/configuration.dart';
 import 'package:project_layout_1/components/toast.dart';
 import 'package:toast/toast.dart';
@@ -69,268 +71,182 @@ class _SignupScreenState extends State<SignupScreen> {
             SizedBox(
               height: size.height * 0.05,
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.07),
-              decoration: whichTap == "fullname"
+            InputContainer(
+              deco: whichTap == "fullname"
                   ? BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: kSecondaryColor.withAlpha(70))
                   : BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: kPrimaryColor),
-              child: TextField(
+              icon: Icons.person_outline,
+              value: name,
+              label: "FULL NAME",
+              onChanged: (value) {
+                name = value;
+              },
+              onSubmitted: (value) {
+                whichTap = "";
+              },
+              onTap: () {
+                whichTap = "fullname";
+              },
+            ),
+            InputContainer(
+              deco: whichTap == "phone"
+                  ? BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: kSecondaryColor.withAlpha(70))
+                  : BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: kPrimaryColor),
+              icon: Icons.phone_iphone,
+              value: phone,
+              label: "PHONE NO",
+              onChanged: (value) {
+                phone = value;
+              },
+              onSubmitted: (value) {
+                whichTap = "";
+              },
+              onTap: () {
+                whichTap = "phone";
+              },
+            ),
+            InputContainer(
+              deco: whichTap == "email"
+                  ? BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: kSecondaryColor.withAlpha(70))
+                  : BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: kPrimaryColor),
+              icon: Icons.email,
+              value: email,
+              label: "EMAIL",
+              onChanged: (value) {
+                email = value;
+              },
+              onSubmitted: (value) {
+                whichTap = "";
+              },
+              onTap: () {
+                whichTap = "email";
+              },
+            ),
+            InputContainer(
+              deco: whichTap == "password"
+                  ? BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: kSecondaryColor.withAlpha(70))
+                  : BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: kPrimaryColor),
+              icon:
+                  whichTap == "password" ? Icons.lock_open : Icons.lock_outline,
+              value: password,
+              obscureText: passwordInvisible,
+              label: "PASSWORD",
+              onChanged: (value) {
+                password = value;
+              },
+              onSubmitted: (value) {
+                whichTap = "";
+              },
+              onTap: () {
+                whichTap = "password";
+              },
+              suffixIcon: GestureDetector(
                 onTap: () {
                   setState(() {
-                    whichTap = "fullname";
+                    passwordInvisible = !passwordInvisible;
                   });
                 },
-                onChanged: (value) {
-                  name = value;
-                },
-                onSubmitted: (value) {
-                  setState(() {
-                    whichTap = "";
-                  });
-                },
-                style:
-                    TextStyle(color: kFontColor, fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                    icon: Icon(
-                      Icons.person_outline,
-                      color: kFontColor.withOpacity(0.87),
-                    ),
-                    border: InputBorder.none,
-                    labelText: "FULL NAME",
-                    labelStyle: TextStyle(color: kFontColor.withOpacity(0.5))),
+                child: Icon(
+                  passwordInvisible ? Icons.visibility_off : Icons.visibility,
+                  color: passwordInvisible
+                      ? kFontColor.withOpacity(.5)
+                      : kFontColor.withOpacity(.87),
+                ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.07),
-              decoration: whichTap == "phone"
+            InputContainer(
+              deco: whichTap == "confpass"
                   ? BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: kSecondaryColor.withAlpha(70))
                   : BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: kPrimaryColor),
-              child: TextField(
-                onTap: () {
-                  setState(() {
-                    whichTap = "phone";
-                  });
-                },
-                onChanged: (value) {
-                  phone = value;
-                },
-                onSubmitted: (value) {
-                  setState(() {
-                    whichTap = "";
-                  });
-                },
-                style:
-                    TextStyle(color: kFontColor, fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                    icon: Icon(
-                      Icons.phone_iphone,
-                      color: kFontColor.withOpacity(0.87),
-                    ),
-                    border: InputBorder.none,
-                    labelText: "PHONE",
-                    labelStyle: TextStyle(color: kFontColor.withOpacity(0.5))),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.07),
-              decoration: whichTap == "email"
-                  ? BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kSecondaryColor.withAlpha(70))
-                  : BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kPrimaryColor),
-              child: TextField(
-                onTap: () {
-                  setState(() {
-                    whichTap = "email";
-                  });
-                },
-                onChanged: (value) {
-                  email = value;
-                },
-                onSubmitted: (value) {
-                  setState(() {
-                    whichTap = "";
-                  });
-                },
-                style:
-                    TextStyle(color: kFontColor, fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                    icon: Icon(
-                      Icons.email,
-                      color: kFontColor.withOpacity(0.87),
-                    ),
-                    border: InputBorder.none,
-                    labelText: "EMAIL",
-                    labelStyle: TextStyle(color: kFontColor.withOpacity(0.5))),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.07),
-              decoration: whichTap == "password"
-                  ? BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kSecondaryColor.withAlpha(70))
-                  : BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kPrimaryColor),
-              child: TextField(
-                onTap: () {
-                  setState(() {
-                    whichTap = "password";
-                  });
-                },
-                onChanged: (value) {
-                  password = value;
-                },
-                onSubmitted: (value) {
-                  setState(() {
-                    whichTap = "";
-                  });
-                },
-                obscureText: passwordInvisible,
-                style:
-                    TextStyle(color: kFontColor, fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                    icon: Icon(
-                      whichTap == "password"
-                          ? Icons.lock_open
-                          : Icons.lock_outline,
-                      color: kFontColor.withOpacity(0.87),
-                    ),
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          passwordInvisible = passwordInvisible ? false : true;
-                        });
-                      },
-                      child: Icon(
-                        passwordInvisible
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: kFontColor.withOpacity(0.87),
-                      ),
-                    ),
-                    border: InputBorder.none,
-                    labelText: "PASSWORD",
-                    labelStyle: TextStyle(color: kFontColor.withOpacity(0.5))),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              margin: EdgeInsets.symmetric(horizontal: size.width * 0.07),
-              decoration: whichTap == "confpass"
-                  ? BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kSecondaryColor.withAlpha(70))
-                  : BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kPrimaryColor),
-              child: TextField(
-                onTap: () {
-                  setState(() {
-                    whichTap = "confpass";
-                  });
-                },
-                onSubmitted: (value) {
-                  setState(() {
-                    whichTap = "";
-                  });
-                },
-                onChanged: (value) {
-                  confpass = value;
-                },
-                obscureText: true,
-                style:
-                    TextStyle(color: kFontColor, fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                    icon: Icon(
-                      whichTap == "confpass"
-                          ? Icons.lock_open
-                          : Icons.lock_outline,
-                      color: kFontColor.withOpacity(0.87),
-                    ),
-                    border: InputBorder.none,
-                    labelText: "CONFIRM PASSWORD",
-                    labelStyle: TextStyle(color: kFontColor.withOpacity(0.5))),
-              ),
+              icon:
+                  whichTap == "confpass" ? Icons.lock_open : Icons.lock_outline,
+              obscureText: true,
+              value: confpass,
+              label: "CONFIRM PASSWORD",
+              onChanged: (value) {
+                confpass = value;
+              },
+              onSubmitted: (value) {
+                whichTap = "";
+              },
+              onTap: () {
+                whichTap = "confpass";
+              },
             ),
             SizedBox(
               height: size.height * 0.1,
             ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: Container(
-                width: size.width * 0.6,
-                color: kAccentColor,
-                child: FlatButton(
-                  onPressed: () async {
-                    if (name.isEmpty ||
-                        phone.isEmpty ||
-                        email.isEmpty ||
-                        password.isEmpty ||
-                        confpass.isEmpty) {
-                      showToast("Please fill in all the form field!", context,
-                          duration: 5, gravity: Toast.BOTTOM);
-                      return;
-                    } else if (password != confpass) {
-                      showToast("Password does not matching!", context,
-                          duration: 5, gravity: Toast.BOTTOM);
-                      return;
-                    }
+            MenuButton(
+              title: "REGISTER",
+              onPressed: () async {
+                if (name.isEmpty ||
+                    phone.isEmpty ||
+                    email.isEmpty ||
+                    password.isEmpty ||
+                    confpass.isEmpty) {
+                  showToast("Please fill in all the form field!", context,
+                      duration: 5, gravity: Toast.BOTTOM);
+                  return;
+                } else if (password != confpass) {
+                  showToast("Password does not matching!", context,
+                      duration: 5, gravity: Toast.BOTTOM);
+                  return;
+                }
 
-                    try {
-                      await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                              email: email, password: password)
-                          .then((value) async {
-                        dynamic credential = {
-                          "fullname": name,
-                          "phoneno": phone,
-                          "email": email,
-                          "password": password,
-                          "id": value.user.uid
-                        };
+                try {
+                  await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                          email: email, password: password)
+                      .then((value) async {
+                    dynamic credential = {
+                      "fullname": name,
+                      "phoneno": phone,
+                      "email": email,
+                      "password": password,
+                      "id": value.user.uid
+                    };
 
-                        await registeruser(credential, context)
-                            .then((value) async {
+                    await registeruser(credential, context).then((value) async {
+                      if (value) {
+                        await login(
+                                {"email": email, "password": password}, context)
+                            .then((value) {
                           if (value) {
-                            await login({"email": email, "password": password},
-                                    context)
-                                .then((value) {
-                              if (value) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) {
-                                    return DrawerScreen();
-                                  },
-                                ));
-                              }
-                            });
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) {
+                                return DrawerScreen();
+                              },
+                            ));
                           }
                         });
-                      });
-                    } catch (e) {
-                      showToast(e.message, context,
-                          duration: 5, gravity: Toast.BOTTOM);
-                    }
-                  },
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                  child: Text("SIGN UP"),
-                ),
-              ),
+                      }
+                    });
+                  });
+                } catch (e) {
+                  showToast(e.message, context,
+                      duration: 5, gravity: Toast.BOTTOM);
+                }
+              },
             ),
             SizedBox(
               height: size.height * 0.05,
