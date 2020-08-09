@@ -29,41 +29,37 @@ class _BodyState extends State<Body> {
             child: Container(
               width: size.width,
               height: size.height,
-              padding: EdgeInsets.only(
-                  left: size.width * 0.07,
-                  right: size.width * 0.07,
-                  top: size.height * 0.08,
-                  bottom: size.height * 0.08),
               child: Column(
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (isCollapsed)
-                              animateController.forward();
-                            else
-                              animateController.reverse();
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(size.width * 0.07,
+                        size.height * 0.08, size.width * 0.07, 0.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (isCollapsed)
+                                animateController.forward();
+                              else
+                                animateController.reverse();
 
-                            isCollapsed = !isCollapsed;
-                          });
-                        },
-                        child: Icon(
-                          Icons.menu,
-                          color: kFontColor,
+                              isCollapsed = !isCollapsed;
+                            });
+                          },
+                          child: Icon(
+                            Icons.menu,
+                            color: kFontColor,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "Home",
-                        style: Theme.of(context).textTheme.headline1,
-                      ),
-                      Icon(
-                        Icons.person_outline,
-                        color: kFontColor,
-                      ),
-                    ],
+                        Text(
+                          "Setting",
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                        Text(""),
+                      ],
+                    ),
                   ),
                 ],
               ),

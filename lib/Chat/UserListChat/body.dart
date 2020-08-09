@@ -198,6 +198,7 @@ class _BodyState extends State<Body> {
                               var dataexist = await fm.checkChatRoomExist(
                                   user.email, json['email']);
                               if (dataexist != null) {
+                                Navigator.of(context).pop();
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) {
                                     return ChattingScreen(
@@ -212,12 +213,13 @@ class _BodyState extends State<Body> {
 
                               var chatRoomMap = {
                                 "chatroomId": user.email + "_" + json['email'],
-                                "users": {user.email, json['email']}
+                                "users": [user.email, json['email']]
                               };
                               await fm.createChatRoom(
                                   user.email + "_" + json['email'],
                                   chatRoomMap);
 
+                              Navigator.of(context).pop();
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) {
                                   return ChattingScreen(
