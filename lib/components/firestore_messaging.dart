@@ -11,6 +11,19 @@ class FirestoreMessaging {
     });
   }
 
+  Future<dynamic> checkChatRoomExist(
+      String requestemail, String targetemail) async {
+    dynamic data;
+    final res = await Firestore.instance
+        .collection("ChatRoom")
+        .document(targetemail + "_" + requestemail)
+        .get();
+
+    if (res != null && res.exists) data = res.data;
+
+    return data;
+  }
+
   setConversationMessage(String chatRoomId, messageMap) async {
     await Firestore.instance
         .collection("ChatRoom")

@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_layout_1/Chat/Chatting/chatting_screen.dart';
+import 'package:project_layout_1/HttpController/http_request.dart';
 import 'package:project_layout_1/components/animation_config.dart';
 import 'package:project_layout_1/components/configuration.dart';
 import 'package:project_layout_1/components/firestore_messaging.dart';
 import 'package:project_layout_1/components/loading_screen.dart';
+import 'package:project_layout_1/components/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class Body extends StatefulWidget {
   const Body({Key key}) : super(key: key);
@@ -90,7 +93,9 @@ class _BodyState extends State<Body> {
                               style: Theme.of(context).textTheme.headline1,
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                displaySearchDialog();
+                              },
                               child: Icon(
                                 Icons.add,
                                 color: kFontColor,
@@ -122,6 +127,122 @@ class _BodyState extends State<Body> {
         ),
       ),
     );
+  }
+
+  displaySearchDialog() {
+    Size size = MediaQuery.of(context).size;
+    String input = "";
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: kPrimaryColor,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            child: Container(
+              height: size.height * 0.3,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        "Create Chat Room",
+                        style: TextStyle(
+                            color: kFontColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: size.width * 0.02),
+                      child: TextField(
+                        onChanged: (value) {
+                          input = value;
+                        },
+                        style: TextStyle(color: kFontColor),
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Phone Number/Email',
+                            hintStyle:
+                                TextStyle(color: kFontColor.withOpacity(0.5))),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: Container(
+                        width: size.width * 0.9,
+                        color: kOnPrimaryColor,
+                        child: FlatButton(
+                          padding: EdgeInsets.all(10),
+                          onPressed: () async {
+                            if (input.isEmpty) {
+                              showToast("Please fill in the field!", context,
+                                  duration: 5, gravity: Toast.BOTTOM);
+                              return;
+                            }
+
+                            var json = await authorizedgetrequest(
+                                "user/getuserby?q=" + input, context);
+                            if (json != null) {
+                              FirestoreMessaging fm = new FirestoreMessaging();
+                              var dataexist = await fm.checkChatRoomExist(
+                                  user.email, json['email']);
+                              if (dataexist != null) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) {
+                                    return ChattingScreen(
+                                      email: json['email'],
+                                      currentuseremail: user.email,
+                                      chatRoomId: dataexist['chatroomId'],
+                                    );
+                                  },
+                                ));
+                                return;
+                              }
+
+                              var chatRoomMap = {
+                                "chatroomId": user.email + "_" + json['email'],
+                                "users": {user.email, json['email']}
+                              };
+                              await fm.createChatRoom(
+                                  user.email + "_" + json['email'],
+                                  chatRoomMap);
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) {
+                                  return ChattingScreen(
+                                    email: json['email'],
+                                    currentuseremail: user.email,
+                                    chatRoomId: chatRoomMap['chatroomId'],
+                                  );
+                                },
+                              ));
+                            }
+                          },
+                          child: Text(
+                            "Create Room",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: kAccentColor,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Widget loadChatroom() {
