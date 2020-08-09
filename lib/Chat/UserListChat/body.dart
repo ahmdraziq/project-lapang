@@ -67,6 +67,7 @@ class _BodyState extends State<Body> {
                     child: Column(
                       children: <Widget>[
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
@@ -84,12 +85,16 @@ class _BodyState extends State<Body> {
                                 color: kFontColor,
                               ),
                             ),
-                            SizedBox(
-                              width: size.width * 0.05,
-                            ),
                             Text(
                               "User List",
                               style: Theme.of(context).textTheme.headline1,
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Icon(
+                                Icons.add,
+                                color: kFontColor,
+                              ),
                             ),
                           ],
                         ),
